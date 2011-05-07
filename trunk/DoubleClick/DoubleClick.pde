@@ -8,6 +8,7 @@ unsigned long ledTime = 0;
 boolean doubleClick = false;  
 boolean verbose = false;  
 
+int ledActive;
 int ledLoops = 500;
 
 void doOnOff(int portNum){
@@ -35,29 +36,35 @@ void doFadeOnOff(int portNum){
   }
 
   if (fadeValue < 250) {      
-   analogWrite(portNum, fadeValue); 
-  }  else {
+    analogWrite(portNum, fadeValue); 
+  } else {
     analogWrite(portNum, (500 - fadeValue));         
     if (fadeValue >= 500) { 
       ledTime = 0; 
     }
   } 
+  Serial.println(portNum);
 }
 
 void checkInput(int inByte){
   switch (inByte) {
     case 49:
       Serial.println("ON"); 
-      ledLoops = 1;
+      turnAll(HIGH);
+      delay(500);
       break;
     case 48:
       Serial.println("OFF"); 
-      ledLoops = 500;
+      turnAll(LOW);
       break;
     case 97: // a
     case 98: // b
     case 99: // c
-      doOnOff(pinLed[inByte-97]);
+      ledTime = 0;
+      for (int i = 0; i < 1000; i++) { 
+        doOnOff(pinLed[inByte-97]);
+      }
+      delay(250);
       break;
     case 116: // t
       Serial.print("\nBoard Time: ");
@@ -124,18 +131,17 @@ void loop(){
     }
     
     if (ledLoops < 11) {        
-      int j;
       if (ledTime == 0){
-        j = random(pinMax);
+        ledActive = random(pinMax);
         if (verbose) {
-          doOutPut(pinLed[j], ledLoops);
+          doOutPut(pinLed[ledActive], ledLoops);
         }
         ledLoops++;
       }
       if (doubleClick){
-        doOnOff(pinLed[j]);        
+        doOnOff(pinLed[ledActive]);        
       } else {
-        doFadeOnOff(pinLed[j]);
+        doFadeOnOff(pinLed[ledActive]);
       }
     } else {
       // turn LED off:
