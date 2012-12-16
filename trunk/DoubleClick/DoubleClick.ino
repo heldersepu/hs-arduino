@@ -5,6 +5,8 @@ const int pinMax = sizeof(pinLed)/sizeof(int);
 int fadeValue = 0;
 unsigned long clickTime = 0;
 unsigned long ledTime = 0;
+unsigned long fTime = 0;
+unsigned long mTime = 0;
 boolean doubleClick = false;
 boolean verbose = false;
 
@@ -149,9 +151,11 @@ void loop(){
       ledTime = 0;
       doubleClick = false;
     }
-    int timf =(millis() % 900000);
-    if (timf > 0 && timf < 10) {
-      Serial.println(timf);
+    mTime =millis();
+    fTime =(mTime % 900000);
+    if (fTime > 0 && fTime < 10) {
+      Serial.println(fTime);
+      Serial.println(mTime);
       for (int i = 0; i < pinMax; i++) {
         digitalWrite(pinLed[i], HIGH);
         delay(500);
