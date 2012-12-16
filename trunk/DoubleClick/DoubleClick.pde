@@ -144,6 +144,11 @@ void loop(){
         doFadeOnOff(pinLed[ledActive]);
       }
     } else {
+      if ((millis() % 60000) == 0) {
+        for (int i = 0; i < pinMax; i++) {
+          doOnOff(pinLed[i]);
+        }  
+      }
       // turn LED off:
       turnAll(LOW);
       ledTime = 0; 
