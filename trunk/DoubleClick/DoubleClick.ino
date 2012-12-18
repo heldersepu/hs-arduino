@@ -154,13 +154,8 @@ void loop(){
     mTime =millis();
     fTime =(mTime % 900000);
     if (fTime > 0 && fTime < 10) {
-      Serial.println(fTime);
-      Serial.println(mTime);
-      for (int i = 0; i < pinMax; i++) {
-        digitalWrite(pinLed[i], HIGH);
-        delay(500);
-        turnAll(LOW);
-      }
+      ledLoops = 1;
+      doubleClick = true; 
     }
   }
 }
