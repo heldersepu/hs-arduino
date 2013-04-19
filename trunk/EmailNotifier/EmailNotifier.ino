@@ -35,8 +35,8 @@ byte subnet[] = {
 //byte webmail[] = {212, 27, 48, 2}; // imap.free.fr
 byte webmail[] = {173, 194, 70, 109};
 
-char user[] = "namokaftan@gmail.com"; // your user name
-char pass[]="dragonball26"; // your password
+char user[] = "yourEmail@gmail.com"; // your user name
+char pass[]="passw"; // your password
 
 int i,length,command_id;
 
