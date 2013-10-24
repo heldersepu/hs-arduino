@@ -1,40 +1,46 @@
-const int pinButton = 2;
+#include <SoftwareSerial.h>
+
+struct leds {
+  int pin;
+  boolean on;
+};
+const int pinButton = 8;
 const int pinMax = 3;
-const int pinLed[pinMax] = {4, 5, 6};
-boolean pinState[pinMax] = {LOW, LOW, LOW};
+leds Leds[pinMax] = {{4, false}, {5, false}, {6, false}};
+SoftwareSerial mySerial(2, 3); // RX, TX
+int setup_status = 0;
 
 
 void checkInput(int inByte){
     switch (inByte) {
         case 49:
-            Serial.println("ON");
             turnAll(HIGH);
             break;
         case 48:
-            Serial.println("OFF");
             turnAll(LOW);
             break;
-        case 97: // a
-        case 98: // b
-        case 99: // c
-            pinState[inByte-97] = !pinState[inByte-97];
-            break;
-        case 116: // t
-            Serial.print("\nBoard Time: ");
-            Serial.println(millis());
-            break;
         default:
-            Serial.println(inByte);
+            if (inByte > 64 && inByte < 123) {
+                Leds[inByte-65].on = !Leds[inByte-65].on;
+            }
     }
 }
 
 void turnAll(boolean value){
     for (int i = 0; i < pinMax; i++) {
-        pinState[i] = value;
+        Leds[i].on = value;
+    }
+}
+
+void errFlash(int mTime, int mDelay) {
+    if (millis() < mTime) {
+        turnAll(!Leds[0].on);
+        delay(mDelay);
     }
 }
 
 void setup() {
+    pinMode(13, OUTPUT);
     Serial.begin(9600);
     Serial.println("Init Receiver");
     Serial.println(" ");
@@ -43,21 +49,29 @@ void setup() {
     pinMode(pinButton, INPUT);
     // initialize the LED pins as an output:
     for (int i = 0; i < pinMax; i++) {
-        pinMode(pinLed[i], OUTPUT);
-    }
+        pinMode(Leds[i].pin, OUTPUT);
+    }        
 }
 
 void loop(){
+    // check for error during setup
+    if (setup_status != 0) {
+        errFlash(setup_status, 250);
+    }           
     // check if the pushbutton is pressed.
     if (digitalRead(pinButton) == HIGH) {
         turnAll(LOW);
+        Serial.println("button");
+        Serial.println(mySerial.available());
     }
     // check input from the serial port.
-    if (Serial.available()) {
-        checkInput(Serial.read());
+    if (mySerial.available()) {
+        int inSerial = mySerial.read();
+        checkInput(inSerial);
+        Serial.println(inSerial);
     }
-    // turn the lights
+    // do the lights
     for (int i = 0; i < pinMax; i++) {
-        digitalWrite(pinLed[i], pinState[i]);
+        digitalWrite(Leds[i].pin, Leds[i].on);
     }
 }
