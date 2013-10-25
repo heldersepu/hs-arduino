@@ -1,20 +1,24 @@
 #include <SoftwareSerial.h>
-SoftwareSerial mySerial(0, 1); // RX, TX
+SoftwareSerial mySerial(2, 3); // RX, TX
 
 void setup()  {
-  Serial.begin(57600);
-  Serial.println("init");
   mySerial.begin(9600);
   mySerial.println("Hello, world?");
+  
+  pinMode(7, OUTPUT);
+  digitalWrite(7, 1);
 }
 
 void loop()   
 {
-  if (mySerial.available()) {
-      Serial.print((char)mySerial.read());
-  }
-  if (Serial.available()) {
-      mySerial.print((char)Serial.read());
-  }
-  delay(100);
+    mySerial.print("1");
+    delay(100);
+    mySerial.print("2");
+    delay(100);
+    mySerial.print("3");
+    
+    delay(500);
+    if (mySerial.available()) {
+        digitalWrite(7, 0);
+    }
 }
