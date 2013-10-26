@@ -1,9 +1,10 @@
+const int BoardID = '3';
+const int pinMax = 3;
+
 struct leds {
   int pin;
   boolean on;
 };
-
-const int pinMax = 3;
 leds Leds[pinMax] = {{4, false}, {5, false}, {6, false}};
 int setup_status = 0;
 
@@ -38,24 +39,26 @@ void errFlash(int mTime, int mDelay) {
 
 void setup() {
     Serial.begin(9600);
+    Serial.println(BoardID);
     // initialize the LED pins as output:
     for (int i = 0; i < pinMax; i++) {
         pinMode(Leds[i].pin, OUTPUT);
-    }        
+    }
 }
 
 void loop(){
     // check for error during setup
     if (setup_status != 0) {
         errFlash(setup_status, 250);
-    }           
-    
+    }
+
     // check input from the serial port.
     while (Serial.available()) {
-        int inSerial = Serial.read();
-        checkInput(inSerial);
+        if (BoardID == Serial.read()){
+            checkInput(Serial.read());
+        }
     }
-    
+
     // do the lights
     for (int i = 0; i < pinMax; i++) {
         digitalWrite(Leds[i].pin, Leds[i].on);
