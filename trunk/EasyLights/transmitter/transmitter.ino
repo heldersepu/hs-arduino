@@ -2,7 +2,7 @@
 
 SoftwareSerial mySerial(10, 11); // RX, TX
 
-void setup()  
+void setup()
 {
     Serial.begin(57600);
     Serial.println("INIT");
