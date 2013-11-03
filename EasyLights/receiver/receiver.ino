@@ -9,6 +9,8 @@ struct leds {
 
 leds Leds[pinMax] = {{3, 0, 1}, {4, 0, 1}, {5, 0, 0}, {6, 0, 0}, {7, 0, 0}};
 int setup_status = 0;
+unsigned long lastCycle = 0;
+boolean cyclicState = LOW;
 
 
 void checkInput(int inByte){
@@ -39,10 +41,17 @@ void errFlash(int mTime, int mDelay) {
     }
 }
 
-void do_the_lights()
-{
+void do_the_lights() {
     for (int i = 0; i < pinMax; i++) {
-        digitalWrite(Leds[i].pin, Leds[i].on);
+        if (Leds[i].cyclic && Leds[i].on) {
+            if ((millis() - lastCycle) > 600) {
+                lastCycle = millis();
+                cyclicState = !cyclicState;
+            }
+            digitalWrite(Leds[i].pin, cyclicState);
+        } else {
+            digitalWrite(Leds[i].pin, Leds[i].on);
+        }
     }
 }
 
