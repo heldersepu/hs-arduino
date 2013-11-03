@@ -1,11 +1,13 @@
 const int BoardID = '3';
-const int pinMax = 3;
+const int pinMax = 5;
 
 struct leds {
   int pin;
   boolean on;
+  boolean cyclic;
 };
-leds Leds[pinMax] = {{4, false}, {5, false}, {6, false}};
+
+leds Leds[pinMax] = {{3, 0, 1}, {4, 0, 1}, {5, 0, 0}, {6, 0, 0}, {7, 0, 0}};
 int setup_status = 0;
 
 
@@ -37,6 +39,13 @@ void errFlash(int mTime, int mDelay) {
     }
 }
 
+void do_the_lights()
+{
+    for (int i = 0; i < pinMax; i++) {
+        digitalWrite(Leds[i].pin, Leds[i].on);
+    }
+}
+
 void setup() {
     Serial.begin(9600);
     Serial.println(BoardID);
@@ -54,14 +63,10 @@ void loop(){
 
     // check input from the serial port.
     while (Serial.available()) {
-        if (BoardID == Serial.read()){
-            checkInput(Serial.read());
-        }
+        int inSerial = Serial.read();
+        checkInput(inSerial);
     }
 
-    // do the lights
-    for (int i = 0; i < pinMax; i++) {
-        digitalWrite(Leds[i].pin, Leds[i].on);
-    }
+    do_the_lights();
 }
 
