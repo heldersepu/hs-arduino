@@ -14,22 +14,22 @@ unsigned long lastCycle = 0;
 boolean cyclicState = LOW;
 
 // Wireless configuration parameters ----------------------------------------
-unsigned char local_ip[] = {192,168,1, BoardID};   // IP address of WiShield
-unsigned char gateway_ip[] = {192,168,1,1};	   // router or gateway IP address
-unsigned char subnet_mask[] = {255,255,255,0};     // subnet mask for the local network
+unsigned char local_ip[] = {192,168,1, BoardID};   // IP of WiShield
+unsigned char gateway_ip[] = {192,168,1,1};	   // router or gateway
+unsigned char subnet_mask[] = {255,255,255,0};     // subnet mask
 const prog_char ssid[] PROGMEM = {"ARDUINO"};      // max 32 bytes
 
 unsigned char security_type = 0;	// 0 - open; 1 - WEP; 2 - WPA; 3 - WPA2
 
 // WPA/WPA2 passphrase
-const prog_char security_passphrase[] PROGMEM = {"udinese10"};	// max 64 characters
+const prog_char security_passphrase[] PROGMEM = {"udinese10"};	// max 64 chars
 prog_uchar wep_keys[] PROGMEM = { };
 unsigned char wireless_mode = 2;
 unsigned char ssid_len;
 unsigned char security_passphrase_len;
-// End of wireless configuration parameters ----------------------------------------
+// End of wireless configuration parameters -----------------------------------
 
-void checkInput(int inByte){
+void checkInput(int inByte) {
     switch (inByte) {
         case 49:
             turnAll(HIGH);
@@ -71,21 +71,36 @@ void do_the_lights() {
     }
 }
 
-boolean serveFunction(char* URL) {  
+boolean serveFunction(char* URL) {
     if (strcmp(URL, "/") == 0) {
-        WiServer.print("Hello World!");
-        turnAll(HIGH);        
+        WiServer.print("ACK");
+        turnAll(HIGH);
         return true;
     }
     return false;
 }
 
-void printData(char* data, int len) {
+void responseFunc(char* data, int len) {
+    boolean isOK = false;
     while (len-- > 0) {
-        Serial.print(*(data++));
+        if (*(data++) == 'K') {
+            isOK = true;
+            break;
+        }
+    }
+    if (isOK) {
+        for (int i = 0; i < pinMax; i++) {
+            Leds[i].on = false;
+        }
+        while (len-- > 0) {
+            checkInput(*(data++));
+        }
     }
 }
 
+
+uint8 ip[] = {192,168,1,100};
+GETrequest gRequest(ip, 80, "192.168.1.100", "/");
 void setup() {
     Serial.begin(9600);
     Serial.println("INIT");
@@ -95,12 +110,14 @@ void setup() {
         pinMode(Leds[i].pin, OUTPUT);
     }
     // initialize the serve function
-    WiServer.init(serveFunction);
-    WiServer.enableVerboseMode(true);
+    WiServer.init(NULL);
+    WiServer.enableVerboseMode(false);
+    gRequest.setReturnFunc(responseFunc);
     Serial.println("LOOP");
 }
 
-void loop(){
+long updateTime = 0;
+void loop() {
     // check for error during setup
     if (setup_status != 0) {
         errFlash(setup_status, 250);
@@ -112,8 +129,13 @@ void loop(){
         checkInput(inSerial);
     }
 
-    WiServer.server_task(); 
+    // request data from transmitter
+    if (millis() >= updateTime) {
+        updateTime = millis() + 1000;
+        gRequest.submit();
+    }
+    WiServer.server_task();
     do_the_lights();
-    delay(10);    
+    delay(10);
 }
 
