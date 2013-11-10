@@ -1,4 +1,5 @@
 #include <WiServer.h>
+char url[3] = {"/3"};
 const int BoardID = 3;
 const int pinMax = 5;
 
@@ -12,8 +13,13 @@ leds Leds[pinMax] = {{3, 0, 1}, {4, 0, 1}, {5, 0, 0}, {6, 0, 0}, {7, 0, 0}};
 int setup_status = 0;
 unsigned long lastCycle = 0;
 boolean cyclicState = LOW;
+boolean verbose_output = false;
+long updateTime = 0;
 
 // Wireless configuration parameters ----------------------------------------
+uint8 ip[] = {192,168,1,100};
+GETrequest gRequest(ip, 80, "192.168.1.100", url);
+
 unsigned char local_ip[] = {192,168,1, BoardID};   // IP of WiShield
 unsigned char gateway_ip[] = {192,168,1,1};	   // router or gateway
 unsigned char subnet_mask[] = {255,255,255,0};     // subnet mask
@@ -29,7 +35,9 @@ unsigned char ssid_len;
 unsigned char security_passphrase_len;
 // End of wireless configuration parameters -----------------------------------
 
+
 void checkInput(int inByte) {
+    if (verbose_output) Serial.println(inByte);
     switch (inByte) {
         case 49:
             turnAll(HIGH);
@@ -37,8 +45,14 @@ void checkInput(int inByte) {
         case 48:
             turnAll(LOW);
             break;
+        case 86:
+            verbose_output = !verbose_output;
+            Serial.print("verbose: ");
+            Serial.println(verbose_output);
+            WiServer.enableVerboseMode(verbose_output);
+            break;
         default:
-            if (inByte > 64 && inByte < 123) {
+            if (inByte > 64 && inByte < 84) {
                 Leds[inByte-65].on = !Leds[inByte-65].on;
             }
     }
@@ -74,13 +88,16 @@ void do_the_lights() {
 boolean serveFunction(char* URL) {
     if (strcmp(URL, "/") == 0) {
         WiServer.print("ACK");
-        turnAll(HIGH);
         return true;
     }
     return false;
 }
 
 void responseFunc(char* data, int len) {
+    if (verbose_output) {
+        Serial.print("responseFunc: " );
+        Serial.println(data);
+    }
     boolean isOK = false;
     while (len-- > 0) {
         if (*(data++) == 'K') {
@@ -99,8 +116,6 @@ void responseFunc(char* data, int len) {
 }
 
 
-uint8 ip[] = {192,168,1,100};
-GETrequest gRequest(ip, 80, "192.168.1.100", "/");
 void setup() {
     Serial.begin(9600);
     Serial.println("INIT");
@@ -109,14 +124,16 @@ void setup() {
     for (int i = 0; i < pinMax; i++) {
         pinMode(Leds[i].pin, OUTPUT);
     }
-    // initialize the serve function
+
+    // initialize the wifi function
     WiServer.init(NULL);
     WiServer.enableVerboseMode(false);
     gRequest.setReturnFunc(responseFunc);
+
     Serial.println("LOOP");
 }
 
-long updateTime = 0;
+
 void loop() {
     // check for error during setup
     if (setup_status != 0) {
@@ -125,14 +142,14 @@ void loop() {
 
     // check input from the serial port.
     while (Serial.available()) {
-        int inSerial = Serial.read();
-        checkInput(inSerial);
+        checkInput(Serial.read());
     }
 
     // request data from transmitter
     if (millis() >= updateTime) {
         updateTime = millis() + 1000;
         gRequest.submit();
+        if (verbose_output) Serial.println("gRequest");
     }
     WiServer.server_task();
     do_the_lights();

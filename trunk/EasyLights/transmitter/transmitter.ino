@@ -1,5 +1,10 @@
 #include <WiServer.h>
 
+boolean verbose_output = false;
+long updateTime = 0;
+char lights[5] = {'A','B','C','D','E'};
+int light = 0;
+
 // Wireless configuration parameters ----------------------------------------
 unsigned char local_ip[] = {192,168,1,100};        // IP of WiShield
 unsigned char gateway_ip[] = {192,168,1,1};	   // router or gateway
@@ -16,9 +21,49 @@ unsigned char ssid_len;
 unsigned char security_passphrase_len;
 // End of wireless configuration parameters -----------------------------------
 
+
+void checkInput(int inByte) {
+    if (verbose_output) Serial.println(inByte);
+    switch (inByte) {
+        case 49:
+            //turnAll(HIGH);
+            break;
+        case 48:
+            //turnAll(LOW);
+            break;
+        case 86:
+            verbose_output = !verbose_output;
+            Serial.print("verbose: ");
+            Serial.println(verbose_output);
+            WiServer.enableVerboseMode(verbose_output);
+            break;
+        default:
+            if (verbose_output) {
+                Serial.print("checkInput: ");
+                Serial.println(inByte);
+            }
+    }
+}
+
 boolean serveFunction(char* URL) {
-    if (strcmp(URL, "/") == 0) {
-        WiServer.print("ACK");
+    if (verbose_output) {
+        Serial.println(URL);
+    }
+    if (strcmp(URL, "/3") == 0) {
+        if (millis() >= updateTime) {
+            updateTime = millis() + 5000;
+            light++;
+            if (light > 4) {
+                light = 0;
+            }
+        }
+        WiServer.print(lights[light]);
+        return true;
+    } else if (strcmp(URL, "/4") == 0) {
+        WiServer.print("NOT ACTIVE");
+        return true;
+    } else if (strcmp(URL, "/5") == 0) {
+        WiServer.print("NOT ACTIVE");
         return true;
     }
     return false;
@@ -40,6 +85,12 @@ void setup() {
 
 void loop() {
     WiServer.server_task();
+
+    // check input from the serial port.
+    while (Serial.available()) {
+        checkInput(Serial.read());
+    }
+
     delay(10);
 }
 
