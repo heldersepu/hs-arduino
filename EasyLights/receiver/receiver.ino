@@ -1,5 +1,5 @@
 #include <WiServer.h>
-char BoardID[3] = {"/3"};
+char BoardID[3] = {"/4"};
 const int pinMax = 6;
 
 struct leds {
@@ -11,7 +11,7 @@ struct leds {
 
 leds LedsList[4][pinMax] = {
     {{3, 0, 1, 'A'}, {4, 0, 0, 'F'}, {5, 0, 0, 'C'}, {6, 0, 0, 'L'}, {7, 0, 0, 'H'}, {8, 0, 0, '~'}},
-    {{3, 0, 1, 'B'}, {4, 0, 1, 'F'}, {5, 0, 0, 'C'}, {6, 0, 0, 'L'}, {7, 0, 0, 'H'}, {8, 0, 0, '~'}},
+    {{3, 0, 1, 'B'}, {4, 0, 0, 'F'}, {5, 0, 0, 'C'}, {6, 0, 0, 'L'}, {7, 0, 0, 'H'}, {8, 0, 0, '~'}},
     {{3, 0, 1, 'A'}, {4, 0, 1, 'B'}, {5, 0, 0, 'C'}, {6, 0, 0, 'M'}, {7, 0, 0, 'S'}, {8, 0, 0, 'I'}},
     {{5, 0, 0, 'C'}, {6, 0, 0, 'R'}, {3, 0, 0, 'S'}, {4, 0, 0, 'S'}, {3, 0, 1, 'A'}, {4, 0, 1, 'B'}}
 };
@@ -53,10 +53,10 @@ void checkInput(int inByte) {
             turnAll(LOW);
             break;
         case 86:
-            verbose_output = !verbose_output;
-            Serial.print("verbose: ");
-            Serial.println(verbose_output);
-            WiServer.enableVerboseMode(verbose_output);
+            doVerbose();
+            break;
+        case 87:
+            doStatus();
             break;
         default:
             for (int i = 0; i < pinMax; i++) {
@@ -65,6 +65,25 @@ void checkInput(int inByte) {
                 }
             }
     }
+}
+
+void doVerbose(){
+    verbose_output = !verbose_output;
+    Serial.print("verbose: ");
+    Serial.println(verbose_output);
+    WiServer.enableVerboseMode(verbose_output);
+}
+
+void doStatus(){    
+    for (int i = 0; i < pinMax; i++) {
+        Serial.print(Leds[i].pin);
+        Serial.print(":");        
+        Serial.print(Leds[i].on);
+        Serial.print(".");
+        Serial.print(Leds[i].value);
+        Serial.print("; ");
+    }
+    Serial.println("");
 }
 
 void turnAll(boolean value){
