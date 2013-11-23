@@ -1,15 +1,22 @@
 #include <WiServer.h>
-char url[3] = {"/3"};
-const int BoardID = 3;
-const int pinMax = 5;
+char BoardID[3] = {"/3"};
+const int pinMax = 6;
 
 struct leds {
   int pin;
   boolean on;
   boolean cyclic;
+  char value;
 };
 
-leds Leds[pinMax] = {{3, 0, 1}, {4, 0, 1}, {5, 0, 0}, {6, 0, 0}, {7, 0, 0}};
+leds LedsList[4][pinMax] = {
+    {{3, 0, 1, 'A'}, {4, 0, 0, 'F'}, {5, 0, 0, 'C'}, {6, 0, 0, 'L'}, {7, 0, 0, 'H'}, {8, 0, 0, '~'}},
+    {{3, 0, 1, 'B'}, {4, 0, 1, 'F'}, {5, 0, 0, 'C'}, {6, 0, 0, 'L'}, {7, 0, 0, 'H'}, {8, 0, 0, '~'}},
+    {{3, 0, 1, 'A'}, {4, 0, 1, 'B'}, {5, 0, 0, 'C'}, {6, 0, 0, 'M'}, {7, 0, 0, 'S'}, {8, 0, 0, 'I'}},
+    {{5, 0, 0, 'C'}, {6, 0, 0, 'R'}, {3, 0, 0, 'S'}, {4, 0, 0, 'S'}, {3, 0, 1, 'A'}, {4, 0, 1, 'B'}}
+};
+leds Leds[pinMax];
+
 int setup_status = 0;
 unsigned long lastCycle = 0;
 boolean cyclicState = LOW;
@@ -18,9 +25,9 @@ long updateTime = 0;
 
 // Wireless configuration parameters ----------------------------------------
 uint8 ip[] = {192,168,1,100};
-GETrequest gRequest(ip, 80, "192.168.1.100", url);
+GETrequest gRequest(ip, 80, "192.168.1.100", BoardID);
 
-unsigned char local_ip[] = {192,168,1, BoardID};   // IP of WiShield
+unsigned char local_ip[] = {192,168,1, BoardID[1]};   // IP of WiShield
 unsigned char gateway_ip[] = {192,168,1,1};	   // router or gateway
 unsigned char subnet_mask[] = {255,255,255,0};     // subnet mask
 const prog_char ssid[] PROGMEM = {"ARDUINO"};      // max 32 bytes
@@ -52,8 +59,10 @@ void checkInput(int inByte) {
             WiServer.enableVerboseMode(verbose_output);
             break;
         default:
-            if (inByte > 64 && inByte < 84) {
-                Leds[inByte-65].on = !Leds[inByte-65].on;
+            for (int i = 0; i < pinMax; i++) {
+                if (Leds[i].value == inByte) {
+                    Leds[i].on = !Leds[i].on;
+                }
             }
     }
 }
@@ -120,8 +129,10 @@ void setup() {
     Serial.begin(9600);
     Serial.println("INIT");
     Serial.println(BoardID);
+    
     // initialize the LED pins as output:
     for (int i = 0; i < pinMax; i++) {
+        Leds[i] = LedsList[BoardID[1]-51][i];
         pinMode(Leds[i].pin, OUTPUT);
     }
 

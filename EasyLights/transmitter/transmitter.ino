@@ -1,9 +1,14 @@
 #include <WiServer.h>
+const int pinMax = 5;
 
+struct input {
+  int pin;
+  int on;
+  char value;
+};
+
+input Input[pinMax] = {{3, 0, 'C'}, {4, 0, 'B'}, {5, 0, 'E'}, {6, 0, 'D'}, {7, 0, 'A'}};
 boolean verbose_output = false;
-long updateTime = 0;
-char lights[5] = {'A','B','C','D','E'};
-int light = 0;
 
 // Wireless configuration parameters ----------------------------------------
 unsigned char local_ip[] = {192,168,1,100};        // IP of WiShield
@@ -50,14 +55,17 @@ boolean serveFunction(char* URL) {
         Serial.println(URL);
     }
     if (strcmp(URL, "/3") == 0) {
-        if (millis() >= updateTime) {
-            updateTime = millis() + 5000;
-            light++;
-            if (light > 4) {
-                light = 0;
+        for (int i = 0; i < pinMax; i++) {
+            if (verbose_output) {
+                Serial.print(i);
+                Serial.print(Input[i].on);
+                Serial.print(Input[i].value);
+            }
+            if (Input[i].on) {
+                WiServer.print(Input[i].value);                
             }
         }
-        WiServer.print(lights[light]);
+        if (verbose_output) Serial.println("");
         return true;
     } else if (strcmp(URL, "/4") == 0) {
         WiServer.print("NOT ACTIVE");
@@ -78,8 +86,14 @@ void responseFunc(char* data, int len) {
 void setup() {
     Serial.begin(57600);
     Serial.println("INIT");
+    for (int i = 0; i < pinMax; i++) {
+        pinMode(Input[i].pin, INPUT_PULLUP);
+    }
+    Serial.println("INPUT_PULLUP");
+    WiServer.enableVerboseMode(true);
+    Serial.println("serveFunction");
     WiServer.init(serveFunction);
-    WiServer.enableVerboseMode(false);
+    
     Serial.println("LOOP");
 }
 
@@ -90,7 +104,9 @@ void loop() {
     while (Serial.available()) {
         checkInput(Serial.read());
     }
-
+    for (int i = 0; i < pinMax; i++) {
+        Input[i].on = !digitalRead(Input[i].pin);
+    }
     delay(10);
 }
 
