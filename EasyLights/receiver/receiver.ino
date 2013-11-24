@@ -67,17 +67,17 @@ void checkInput(int inByte) {
     }
 }
 
-void doVerbose(){
+void doVerbose() {
     verbose_output = !verbose_output;
     Serial.print("verbose: ");
     Serial.println(verbose_output);
     WiServer.enableVerboseMode(verbose_output);
 }
 
-void doStatus(){    
+void doStatus() {
     for (int i = 0; i < pinMax; i++) {
         Serial.print(Leds[i].pin);
-        Serial.print(":");        
+        Serial.print(":");
         Serial.print(Leds[i].on);
         Serial.print(".");
         Serial.print(Leds[i].value);
@@ -148,7 +148,7 @@ void setup() {
     Serial.begin(9600);
     Serial.println("INIT");
     Serial.println(BoardID);
-    
+
     // initialize the LED pins as output:
     for (int i = 0; i < pinMax; i++) {
         Leds[i] = LedsList[BoardID[1]-51][i];

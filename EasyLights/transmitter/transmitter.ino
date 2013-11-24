@@ -62,7 +62,7 @@ boolean serveFunction(char* URL) {
                 Serial.print(Input[i].value);
             }
             if (Input[i].on) {
-                WiServer.print(Input[i].value);                
+                WiServer.print(Input[i].value);
             }
         }
         if (verbose_output) Serial.println("");
@@ -93,7 +93,7 @@ void setup() {
     WiServer.enableVerboseMode(true);
     Serial.println("serveFunction");
     WiServer.init(serveFunction);
-    
+
     Serial.println("LOOP");
 }
 
