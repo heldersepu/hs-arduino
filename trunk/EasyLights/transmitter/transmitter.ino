@@ -1,14 +1,19 @@
 #include <WiServer.h>
-const int pinMax = 5;
+const int pinMax = 10;
 
 struct input {
   int pin;
-  int on;
+  boolean on;
   char value;
 };
 
-input Input[pinMax] = {{17, 0, 'B'}, {18, 0, 'H'}, {19, 0, 'L'}, {20, 0, 'A'}, {21, 0, 'S'}};
+input Input[pinMax] = {{17, 0, 'B'}, {18, 0, 'H'}, {19, 0, 'L'}, {20, 0, 'A'}, {21, 0, 'S'},
+                       {22, 0, 'C'}, {23, 0, 'F'}, {24, 0, 'I'}, {22, 0, 'M'}, {22, 0, 'R'}};
+int setup_status = 0;
 boolean verbose_output = false;
+int samplePin = 0;
+boolean sample_output = true;
+long updateTime = 0;
 
 // Wireless configuration parameters ----------------------------------------
 unsigned char local_ip[] = {192,168,1,100};        // IP of WiShield
@@ -42,6 +47,9 @@ void checkInput(int inByte) {
         case 87:
             doStatus();
             break;
+        case 88:
+            sample_output = !sample_output;
+            break;
         default:
             if (verbose_output) {
                 Serial.print("checkInput: ");
@@ -69,11 +77,31 @@ void doStatus() {
     Serial.println("");
 }
 
+void errFlash(int mTime, int mDelay) {
+    if (millis() < mTime) {
+        //turnAll(!Leds[0].on);
+        delay(mDelay);
+    }
+}
+
 boolean serveFunction(char* URL) {
     if (verbose_output) {
         Serial.println(URL);
     }
-    if (strcmp(URL, "/3") == 0) {
+
+    if (sample_output) {
+        if (millis() >= updateTime) {
+            updateTime = millis() + 3000;
+            samplePin += 1;
+            if (samplePin >= pinMax) {
+                samplePin = 0;
+            }
+        }
+        WiServer.print(Input[samplePin].value);
+        return true;
+    }
+
+    if (URL[0] == '/') {
         for (int i = 0; i < pinMax; i++) {
             if (verbose_output) {
                 Serial.print(i);
@@ -86,12 +114,6 @@ boolean serveFunction(char* URL) {
         }
         if (verbose_output) Serial.println("");
         return true;
-    } else if (strcmp(URL, "/4") == 0) {
-        WiServer.print("NOT ACTIVE");
-        return true;
-    } else if (strcmp(URL, "/5") == 0) {
-        WiServer.print("NOT ACTIVE");
-        return true;
     }
     return false;
 }
@@ -103,8 +125,10 @@ void responseFunc(char* data, int len) {
 }
 
 void setup() {
-    Serial.begin(57600);
+    Serial.begin(9600);
     Serial.println("INIT");
+    pinMode(3, OUTPUT);
+
     for (int i = 0; i < pinMax; i++) {
         pinMode(Input[i].pin, INPUT_PULLUP);
     }
