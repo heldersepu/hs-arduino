@@ -7,7 +7,7 @@ struct input {
   char value;
 };
 
-input Input[pinMax] = {{3, 0, 'C'}, {4, 0, 'B'}, {5, 0, 'E'}, {6, 0, 'D'}, {7, 0, 'A'}};
+input Input[pinMax] = {{17, 0, 'B'}, {18, 0, 'H'}, {19, 0, 'L'}, {20, 0, 'A'}, {21, 0, 'S'}};
 boolean verbose_output = false;
 
 // Wireless configuration parameters ----------------------------------------
@@ -37,10 +37,10 @@ void checkInput(int inByte) {
             //turnAll(LOW);
             break;
         case 86:
-            verbose_output = !verbose_output;
-            Serial.print("verbose: ");
-            Serial.println(verbose_output);
-            WiServer.enableVerboseMode(verbose_output);
+            doVerbose();
+            break;
+        case 87:
+            doStatus();
             break;
         default:
             if (verbose_output) {
@@ -48,6 +48,25 @@ void checkInput(int inByte) {
                 Serial.println(inByte);
             }
     }
+}
+
+void doVerbose() {
+    verbose_output = !verbose_output;
+    Serial.print("verbose: ");
+    Serial.println(verbose_output);
+    WiServer.enableVerboseMode(verbose_output);
+}
+
+void doStatus() {
+    for (int i = 0; i < pinMax; i++) {
+        Serial.print(Input[i].pin);
+        Serial.print(":");
+        Serial.print(Input[i].on);
+        Serial.print(".");
+        Serial.print(Input[i].value);
+        Serial.print("; ");
+    }
+    Serial.println("");
 }
 
 boolean serveFunction(char* URL) {
