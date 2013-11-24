@@ -177,7 +177,7 @@ void loop() {
 
     // request data from transmitter
     if (millis() >= updateTime) {
-        updateTime = millis() + 1000;
+        updateTime = millis() + 100;
         gRequest.submit();
         if (verbose_output) Serial.println("gRequest");
     }
