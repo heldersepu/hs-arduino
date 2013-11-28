@@ -12,7 +12,7 @@ input Input[pinMax] = {{17, 0, 'B'}, {18, 0, 'H'}, {19, 0, 'L'}, {20, 0, 'A'}, {
 int setup_status = 0;
 boolean verbose_output = false;
 int samplePin = 0;
-boolean sample_output = true;
+boolean sample_output = false;
 long updateTime = 0;
 
 // Wireless configuration parameters ----------------------------------------
@@ -87,6 +87,7 @@ void errFlash(int mTime, int mDelay) {
 boolean serveFunction(char* URL) {
     if (verbose_output) {
         Serial.println(URL);
+        Serial.println(millis());
     }
 
     if (sample_output) {
@@ -129,9 +130,9 @@ void setup() {
     Serial.println("INIT");
     pinMode(3, OUTPUT);
 
-    for (int i = 0; i < pinMax; i++) {
-        pinMode(Input[i].pin, INPUT_PULLUP);
-    }
+    //for (int i = 0; i < pinMax; i++) {
+    //    pinMode(Input[i].pin, INPUT_PULLUP);
+    //}
     Serial.println("INPUT_PULLUP");
     WiServer.enableVerboseMode(true);
     Serial.println("serveFunction");
@@ -147,9 +148,9 @@ void loop() {
     while (Serial.available()) {
         checkInput(Serial.read());
     }
-    for (int i = 0; i < pinMax; i++) {
-        Input[i].on = !digitalRead(Input[i].pin);
-    }
+    //for (int i = 0; i < pinMax; i++) {
+    //    Input[i].on = !digitalRead(Input[i].pin);
+    //}
     delay(10);
 }
 

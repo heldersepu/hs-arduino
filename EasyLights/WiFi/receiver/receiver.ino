@@ -124,6 +124,7 @@ boolean serveFunction(char* URL) {
 void responseFunc(char* data, int len) {
     if (verbose_output) {
         Serial.print("responseFunc: " );
+        Serial.println(millis());
         Serial.println(data);
     }
     boolean isOK = false;
@@ -176,13 +177,10 @@ void loop() {
     }
 
     // request data from transmitter
-    if (millis() >= updateTime) {
-        updateTime = millis() + 100;
-        gRequest.submit();
-        if (verbose_output) Serial.println("gRequest");
-    }
+    gRequest.submit();
+    
     WiServer.server_task();
     do_the_lights();
-    delay(10);
+    delay(100);
 }
 
