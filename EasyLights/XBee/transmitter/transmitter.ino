@@ -5,12 +5,6 @@ boolean sample_output = true;
 long updateTime = 0;
 int samplePin = 64;
 
-void setup()
-{
-    Serial.begin(9600);
-    Serial.println("INIT");
-    mySerial.begin(9600);
-}
 
 void doSample()
 {
@@ -32,8 +26,13 @@ void doSample()
     }
 }
 
-void loop()
-{
+void setup() {
+    Serial.begin(9600);
+    Serial.println("INIT");
+    mySerial.begin(9600);
+}
+
+void loop() {
     if (mySerial.available())
         Serial.write(mySerial.read());
     if (Serial.available())
