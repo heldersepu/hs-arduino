@@ -17,7 +17,7 @@ boolean cyclicState = LOW;
 
 
 void checkInput(int inByte){
-    
+
     switch (inByte) {
         case 49:
             turnAll(HIGH);
@@ -75,7 +75,7 @@ void loop(){
         errFlash(setup_status, 250);
     }
 
-    
+
     // check input from the serial port.
     while (mySerial.available()) {
         int inSerial = mySerial.read();
@@ -92,7 +92,7 @@ void loop(){
         }
     }
     Serial.println("");
-    
+
     do_the_lights();
 }
 
