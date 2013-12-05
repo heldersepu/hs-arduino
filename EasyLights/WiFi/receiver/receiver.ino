@@ -178,7 +178,7 @@ void loop() {
 
     // request data from transmitter
     gRequest.submit();
-    
+
     WiServer.server_task();
     do_the_lights();
     delay(100);
