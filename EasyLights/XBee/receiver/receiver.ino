@@ -7,21 +7,18 @@ const int pinMax = 6;
 struct leds {
   int pin;
   boolean on;
-  boolean cyclic;
   char value;
 };
 
 leds LedsList[4][pinMax] = {
-    {{3, 0, 1, 'A'}, {4, 0, 0, 'F'}, {5, 0, 0, 'C'}, {6, 0, 0, 'L'}, {7, 0, 0, 'H'}, {8, 0, 0, '~'}},
-    {{3, 0, 1, 'B'}, {4, 0, 0, 'F'}, {5, 0, 0, 'C'}, {6, 0, 0, 'L'}, {7, 0, 0, 'H'}, {8, 0, 0, '~'}},
-    {{3, 0, 1, 'A'}, {4, 0, 1, 'B'}, {5, 0, 0, 'C'}, {6, 0, 0, 'M'}, {7, 0, 0, 'S'}, {8, 0, 0, 'I'}},
-    {{5, 0, 0, 'C'}, {6, 0, 0, 'R'}, {3, 0, 0, 'S'}, {4, 0, 0, 'S'}, {3, 0, 1, 'A'}, {4, 0, 1, 'B'}}
+    {{3, 0, 'A'}, {4, 0, 'F'}, {5, 0, 'C'}, {6, 0, 'L'}, {7, 0, 'H'}, {8, 0, '~'}},
+    {{3, 0, 'B'}, {4, 0, 'F'}, {5, 0, 'C'}, {6, 0, 'L'}, {7, 0, 'H'}, {8, 0, '~'}},
+    {{3, 0, 'A'}, {4, 0, 'B'}, {5, 0, 'C'}, {6, 0, 'M'}, {7, 0, 'S'}, {8, 0, 'I'}},
+    {{5, 0, 'C'}, {6, 0, 'R'}, {3, 0, 'S'}, {4, 0, 'S'}, {3, 0, 'A'}, {4, 0, 'B'}}
 };
 leds Leds[pinMax];
 
 int setup_status = 0;
-unsigned long lastCycle = 0;
-boolean cyclicState = LOW;
 boolean verbose_output = false;
 long updateTime = 0;
 
@@ -83,15 +80,7 @@ void errFlash(int mTime, int mDelay) {
 
 void do_the_lights() {
     for (int i = 0; i < pinMax; i++) {
-        if (Leds[i].cyclic && Leds[i].on) {
-            if ((millis() - lastCycle) > 600) {
-                lastCycle = millis();
-                cyclicState = !cyclicState;
-            }
-            digitalWrite(Leds[i].pin, cyclicState);
-        } else {
-            digitalWrite(Leds[i].pin, Leds[i].on);
-        }
+        digitalWrite(Leds[i].pin, Leds[i].on);
     }
 }
 
@@ -103,7 +92,7 @@ void setup() {
 
     // initialize the LED pins as output:
     for (int i = 0; i < pinMax; i++) {
-        Leds[i] = LedsList[BoardID][i];
+        Leds[i] = LedsList[BoardID-3][i];
         pinMode(Leds[i].pin, OUTPUT);
     }
 }
