@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(13, 12); // RX, TX
 
-const int BoardID = 3;
+const int BoardID = 6;
 const int pinMax = 6;
 
 struct leds {
@@ -14,7 +14,7 @@ leds LedsList[4][pinMax] = {
     {{3, 0, 'A'}, {4, 0, 'F'}, {5, 0, 'C'}, {6, 0, 'L'}, {7, 0, 'H'}, {8, 0, '~'}},
     {{3, 0, 'B'}, {4, 0, 'F'}, {5, 0, 'C'}, {6, 0, 'L'}, {7, 0, 'H'}, {8, 0, '~'}},
     {{3, 0, 'A'}, {4, 0, 'B'}, {5, 0, 'C'}, {6, 0, 'M'}, {7, 0, 'S'}, {8, 0, 'I'}},
-    {{5, 0, 'C'}, {6, 0, 'R'}, {3, 0, 'S'}, {4, 0, 'S'}, {3, 0, 'A'}, {4, 0, 'B'}}
+    {{5, 0, 'C'}, {6, 0, 'R'}, {3, 0, 'T'}, {4, 0, 'P'}, {3, 0, 'A'}, {4, 0, 'B'}}
 };
 leds Leds[pinMax];
 
