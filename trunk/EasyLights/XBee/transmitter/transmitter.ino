@@ -19,7 +19,7 @@ struct input {
   char value;
 };
 
-input Input[pinMax] = {{17, 0, 1, 'B'}, {18, 0, 0, 'H'}, {19, 0, 0, 'L'}, {20, 0, 1, 'A'}, {21, 0, 1, 'S'},
+input Input[pinMax] = {{17, 0, 1, 'B'}, {18, 0, 0, 'H'}, {19, 0, 0, 'L'}, {20, 0, 1, 'A'}, {21, 0, 0, 'S'},
                        {22, 0, 0, 'C'}, {23, 0, 0, 'F'}, {24, 0, 0, 'I'}, {22, 0, 0, 'M'}, {22, 0, 0, 'R'}};
 
 
@@ -94,13 +94,28 @@ void doSample() {
     Serial.println("*********");
 }
 
+void printStatus(char mystr[pinMax+2]) {
+    int j = 0;
+    for (int i = 0; i < pinMax+2; i++) {
+        if (mystr[i] > 10) {
+            j++;
+            Serial.print(mystr[i]);
+            Serial.print(',');
+        }
+    }
+    for (int i = 0; i < (2*pinMax - 2*j); i++) {
+        Serial.print(' ');
+    }
+    Serial.println("*********");
+}
+
 void doLights() {
     char mystr[pinMax+2];
     boolean iStop = false;
     for (int i = 0; i < pinMax+2; i++) {
         mystr[i] = 10;
     }
-    int j = 0;
+    int j = 1;
     mystr[0] = 'K';
     for (int i = 0; i < pinMax; i++) {
         if (Input[i].on) {
@@ -115,25 +130,24 @@ void doLights() {
             } else {
                 mystr[j++] = Input[i].value;
             }
-            if (mystr[j-1] == 'S') {
+            if (Input[i].value == 'S') {
                 iStop = true;
             }
         }
     }
-    
+
     if (iStop) {
         mystr[j++] = 'T';
         mystr[j++] = 'P';
     }
     mySerial.write(mystr);
-    
+
     if (verbose_output) {
-        for (int i = 0; i < pinMax+2; i++) {
-            Serial.print(mystr[i]);
-            Serial.print(',');
-        }
-        Serial.println("*********");
+        printStatus(mystr);
+    } else {
+        delay(10);
     }
+
 }
 
 void errFlash(int mTime, int mDelay) {
@@ -147,7 +161,7 @@ void setup() {
     Serial.begin(9600);
     Serial.println("INIT");
     mySerial.begin(9600);
-    
+
     for (int i = 0; i < pinMax; i++) {
        pinMode(Input[i].pin, INPUT_PULLUP);
     }
@@ -158,7 +172,7 @@ void loop() {
     while (Serial.available()) {
         checkInput(Serial.read());
     }
-    
+
     // check the switches.
     for (int i = 0; i < pinMax; i++) {
        Input[i].on = !digitalRead(Input[i].pin);
