@@ -106,8 +106,10 @@ void loop() {
     // check input from the serial port.
     while (mySerial.available()) {
         int inSerial = mySerial.read();
-        Serial.print(inSerial);
-        Serial.print(" ");
+        if (verbose_output) {
+            Serial.print(inSerial);
+            Serial.print(" ");
+        }
         if (inSerial == 'K') {
             for (int i = 0; i < pinMax; i++) {
                 Leds[i].on = false;
@@ -118,7 +120,7 @@ void loop() {
             break;
         }
     }
-    Serial.println("");
+    if (verbose_output) Serial.println("");
 
     do_the_lights();
 }
