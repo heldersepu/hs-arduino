@@ -2,24 +2,24 @@
 SoftwareSerial mySerial(13, 12); // RX, TX
 
 const int BoardID = 6;
-const int pinMax = 6;
+
 
 struct leds {
   int pin;
   boolean on;
   char value;
 };
-
+const int pinMax = 6;
 leds LedsList[4][pinMax] = {
     {{3, 0, 'A'}, {4, 0, 'F'}, {5, 0, 'C'}, {6, 0, 'L'}, {7, 0, 'H'}, {8, 0, '~'}},
     {{3, 0, 'B'}, {4, 0, 'F'}, {5, 0, 'C'}, {6, 0, 'L'}, {7, 0, 'H'}, {8, 0, '~'}},
     {{3, 0, 'A'}, {4, 0, 'B'}, {5, 0, 'C'}, {6, 0, 'M'}, {7, 0, 'S'}, {8, 0, 'I'}},
-    {{5, 0, 'C'}, {6, 0, 'R'}, {3, 0, 'T'}, {4, 0, 'P'}, {3, 0, 'A'}, {4, 0, 'B'}}
+    {{3, 0, 'A'}, {3, 0, 'T'}, {4, 0, 'B'}, {4, 0, 'P'}, {5, 0, 'C'}, {6, 0, 'R'}}
 };
 leds Leds[pinMax];
 
 int setup_status = 0;
-boolean verbose_output = false;
+boolean verbose_output = true;
 long updateTime = 0;
 
 
@@ -80,7 +80,16 @@ void errFlash(int mTime, int mDelay) {
 
 void do_the_lights() {
     for (int i = 0; i < pinMax; i++) {
-        digitalWrite(Leds[i].pin, Leds[i].on);
+        if (Leds[i].value <= 'B' ) {
+            if (Leds[i].pin != Leds[i-1].pin) {
+                digitalWrite(Leds[i].pin, (Leds[i].on || Leds[i+1].on));
+                i++;
+            } else {
+                digitalWrite(Leds[i].pin, Leds[i].on);
+            }
+        } else {
+            digitalWrite(Leds[i].pin, Leds[i].on);
+        }
     }
 }
 
