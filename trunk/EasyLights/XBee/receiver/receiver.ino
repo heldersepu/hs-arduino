@@ -9,12 +9,12 @@ struct leds {
   boolean on;
   char value;
 };
-const int pinMax = 6;
+const int pinMax = 10;
 leds LedsList[4][pinMax] = {
-    {{3, 0, 'A'}, {4, 0, 'F'}, {5, 0, 'C'}, {6, 0, 'L'}, {7, 0, 'H'}, {8, 0, '~'}},
-    {{3, 0, 'B'}, {4, 0, 'F'}, {5, 0, 'C'}, {6, 0, 'L'}, {7, 0, 'H'}, {8, 0, '~'}},
-    {{3, 0, 'A'}, {4, 0, 'B'}, {5, 0, 'C'}, {6, 0, 'M'}, {7, 0, 'S'}, {8, 0, 'I'}},
-    {{3, 0, 'A'}, {3, 0, 'T'}, {4, 0, 'B'}, {4, 0, 'P'}, {5, 0, 'C'}, {6, 0, 'R'}}
+    {{3, 0, 'A'}, {0,0,'~'},   {4, 0, 'C'}, {5, 0, 'A'}, {6, 0, 'C'}, {7, 0, 'F'}, {8, 0, 'L'}, {9, 0, 'H'}, {10, 0, 'L'}, { 0,0,'~'}  },
+    {{3, 0, 'B'}, {0,0,'~'},   {4, 0, 'C'}, {5, 0, 'B'}, {6, 0, 'C'}, {7, 0, 'F'}, {8, 0, 'L'}, {9, 0, 'H'}, {10, 0, 'L'}, { 0,0,'~'}  },
+    {{3, 0, 'S'}, {0,0,'~'},   {4, 0, 'A'}, {5, 0, 'C'}, {6, 0, 'M'}, {7, 0, 'B'}, {8, 0, 'I'}, {0,0,'~'},   {0,0,'~'},    { 0,0,'~'}  },
+    {{3, 0, 'A'}, {3, 0, 'T'}, {4, 0, 'C'}, {5, 0, 'C'}, {6, 0, 'C'}, {7, 0, 'R'}, {8, 0, 'R'}, {9, 0, 'C'}, {10, 0, 'B'}, {10, 0, 'P'}}
 };
 leds Leds[pinMax];
 
@@ -80,15 +80,17 @@ void errFlash(int mTime, int mDelay) {
 
 void do_the_lights() {
     for (int i = 0; i < pinMax; i++) {
-        if (Leds[i].value <= 'B' ) {
-            if (Leds[i].pin != Leds[i-1].pin) {
-                digitalWrite(Leds[i].pin, (Leds[i].on || Leds[i+1].on));
-                i++;
+        if (Leds[i].pin > 0) {
+            if (Leds[i].value <= 'B' ) {
+                if (Leds[i].pin != Leds[i-1].pin) {
+                    digitalWrite(Leds[i].pin, (Leds[i].on || Leds[i+1].on));
+                    i++;
+                } else {
+                    digitalWrite(Leds[i].pin, Leds[i].on);
+                }
             } else {
                 digitalWrite(Leds[i].pin, Leds[i].on);
             }
-        } else {
-            digitalWrite(Leds[i].pin, Leds[i].on);
         }
     }
 }
@@ -102,7 +104,9 @@ void setup() {
     // initialize the LED pins as output:
     for (int i = 0; i < pinMax; i++) {
         Leds[i] = LedsList[BoardID-3][i];
-        pinMode(Leds[i].pin, OUTPUT);
+        if (Leds[i].pin > 0) {
+            pinMode(Leds[i].pin, OUTPUT);
+        }
     }
 }
 

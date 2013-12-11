@@ -112,6 +112,9 @@ void printStatus(char mystr[pinMax+2]) {
 void doLights() {
     char mystr[pinMax+2];
     boolean iStop = false;
+    boolean iLeft = false;
+    boolean iRigh = false;
+
     for (int i = 0; i < pinMax+2; i++) {
         mystr[i] = 10;
     }
@@ -120,6 +123,11 @@ void doLights() {
     for (int i = 0; i < pinMax; i++) {
         if (Input[i].on) {
             if (Input[i].cyclic) {
+                if (Input[samplePin].value == 'A') {
+                    iLeft = true;
+                } else {
+                    iRigh = true;
+                }
                 if ((millis() - lastCycle) > 600) {
                     lastCycle = millis();
                     cyclicState = !cyclicState;
@@ -137,8 +145,12 @@ void doLights() {
     }
 
     if (iStop) {
-        mystr[j++] = 'T';
-        mystr[j++] = 'P';
+        if (!iLeft) {
+            mystr[j++] = 'T';
+        }
+        if (!iRigh) {
+            mystr[j++] = 'P';
+        }
     }
     mySerial.write(mystr);
 
