@@ -123,7 +123,7 @@ void doLights() {
     for (int i = 0; i < pinMax; i++) {
         if (Input[i].on) {
             if (Input[i].cyclic) {
-                if (Input[samplePin].value == 'A') {
+                if (Input[i].value == 'A') {
                     iLeft = true;
                 } else {
                     iRigh = true;
