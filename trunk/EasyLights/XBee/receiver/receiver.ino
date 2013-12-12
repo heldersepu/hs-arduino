@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(13, 12); // RX, TX
 
-const int BoardID = 6;
+const int BoardID = 4;
 
 
 struct leds {
@@ -19,7 +19,7 @@ leds LedsList[4][pinMax] = {
 leds Leds[pinMax];
 
 int setup_status = 0;
-boolean verbose_output = true;
+boolean verbose_output = false;
 long updateTime = 0;
 
 
@@ -82,7 +82,7 @@ void do_the_lights() {
     for (int i = 0; i < pinMax; i++) {
         if (Leds[i].pin > 0) {
             if (Leds[i].value <= 'B' ) {
-                if (Leds[i].pin != Leds[i-1].pin) {
+                if (Leds[i].pin == Leds[i-1].pin) {
                     digitalWrite(Leds[i].pin, (Leds[i].on || Leds[i+1].on));
                     i++;
                 } else {
@@ -117,6 +117,11 @@ void loop() {
     }
 
     // check input from the serial port.
+    while (Serial.available()) {
+        checkInput(Serial.read());
+    }
+
+    // check input from the soft serial port.
     while (mySerial.available()) {
         int inSerial = mySerial.read();
         if (verbose_output) {
