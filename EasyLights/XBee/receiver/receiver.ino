@@ -2,7 +2,7 @@
 SoftwareSerial mySerial(13, 12); // RX, TX
 
 const int BoardID = 6;
-int MasterKey = 10001;
+char MasterKey[8] = "123EASY";
 
 
 struct leds {
@@ -121,23 +121,35 @@ void loop() {
     }
 
     // check input from the soft serial port.
+    boolean isOK = false;
     while (mySerial.available()) {
         int inSerial = mySerial.read();
-        if (verbose_output) {
-            if (inSerial > 10) {
-                Serial.print(inSerial);
-                Serial.print(" ");
+        if (isOK) {
+            if (verbose_output) {
+                if (inSerial > 10) {
+                    Serial.print((char)inSerial);
+                    Serial.print(" ");
+                }
             }
-        }
-        if (inSerial == 'K') {
-            if (verbose_output) Serial.println("");
-            for (int i = 0; i < pinMax; i++) {
-                Leds[i].on = false;
+            if (inSerial == 'K') {
+                if (verbose_output) Serial.println("");
+                for (int i = 0; i < pinMax; i++) {
+                    Leds[i].on = false;
+                }
+            } else if (inSerial != 10) {
+                checkInput(inSerial);
+            } else {
+                break;
             }
-        } else if (inSerial != 10) {
-            checkInput(inSerial);
         } else {
-            break;
+            int j = 0;
+            while (mySerial.available() && (inSerial == MasterKey[j++])) {
+                if (j > 6) {
+                    isOK = true;
+                    break;
+                }
+                inSerial = mySerial.read();
+            }
         }
     }
 

@@ -2,7 +2,7 @@
 SoftwareSerial mySerial(13, 12); // RX, TX
 
 const int BoardID = 0;
-int MasterKey = 10001;
+char MasterKey[8] = "123EASY";
 
 
 struct input {
@@ -72,8 +72,7 @@ void doStatus() {
 
 void doSample() {
     char mystr[5] = "\10\10\10\10";
-    mystr[0] = MasterKey;
-    mystr[1] = 'K';
+    mystr[0] = 'K';
     if (millis() >= updateTime) {
         updateTime = millis() + 5000;
         samplePin += 1;
@@ -93,6 +92,7 @@ void doSample() {
         mystr[2] = Input[samplePin].value;
     }
     mystr[3] = 10;
+    mySerial.write(MasterKey);
     mySerial.write(mystr);
     Serial.println(mystr);
     Serial.println("*********");
@@ -156,6 +156,7 @@ void doLights() {
             mystr[j++] = 'P';
         }
     }
+    mySerial.write(MasterKey);
     mySerial.write(mystr);
 
     if (verbose_output) {
