@@ -2,6 +2,7 @@
 SoftwareSerial mySerial(13, 12); // RX, TX
 
 const int BoardID = 6;
+int MasterKey = 10001;
 
 
 struct leds {
@@ -20,7 +21,6 @@ leds Leds[pinMax];
 
 int setup_status = 0;
 boolean verbose_output = false;
-long updateTime = 0;
 
 
 void checkInput(int inByte) {
