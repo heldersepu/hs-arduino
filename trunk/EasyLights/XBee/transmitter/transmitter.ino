@@ -118,6 +118,8 @@ void doLights() {
     boolean iStop = false;
     boolean iLeft = false;
     boolean iRigh = false;
+    boolean iLow = false;
+    boolean iFog = false;
 
     for (int i = 0; i < pinMax+2; i++) {
         mystr[i] = 10;
@@ -127,11 +129,6 @@ void doLights() {
     for (int i = 0; i < pinMax; i++) {
         if (Input[i].on) {
             if (Input[i].cyclic) {
-                if (Input[i].value == 'A') {
-                    iLeft = true;
-                } else {
-                    iRigh = true;
-                }
                 if ((millis() - lastCycle) > 600) {
                     lastCycle = millis();
                     cyclicState = !cyclicState;
@@ -139,15 +136,21 @@ void doLights() {
                 if (cyclicState) {
                     mystr[j++] = Input[i].value;
                 }
-            } else {
+            } else if (Input[i].value != 'F') {
                 mystr[j++] = Input[i].value;
             }
-            if (Input[i].value == 'S') {
-                iStop = true;
+
+            switch (Input[i].value) {
+                case 'A': iLeft = true; break;
+                case 'B': iRigh = true; break;
+                case 'S': iStop = true; break;
+                case 'L': iLow = true; break;
+                case 'F': iFog = true; break;
             }
         }
     }
 
+    // turn signal take priority over stop
     if (iStop) {
         if (!iLeft) {
             mystr[j++] = 'T';
@@ -156,6 +159,12 @@ void doLights() {
             mystr[j++] = 'P';
         }
     }
+
+    // fog light are on only if low is on
+    if (iFog && iLow) {
+        mystr[j++] = 'F';
+    }
+
     mySerial.write(MasterKey);
     mySerial.write(mystr);
 
