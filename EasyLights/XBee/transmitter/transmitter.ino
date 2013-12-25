@@ -118,6 +118,7 @@ void doLights() {
     boolean iStop = false;
     boolean iLeft = false;
     boolean iRigh = false;
+    boolean iHigh = false;
     boolean iLow = false;
     boolean iFog = false;
 
@@ -144,8 +145,9 @@ void doLights() {
                 case 'A': iLeft = true; break;
                 case 'B': iRigh = true; break;
                 case 'S': iStop = true; break;
-                case 'L': iLow = true; break;
-                case 'F': iFog = true; break;
+                case 'H': iHigh = true; break;
+                case 'L': iLow  = true; break;
+                case 'F': iFog  = true; break;
             }
         }
     }
