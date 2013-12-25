@@ -82,13 +82,13 @@ void do_the_lights() {
         if (Leds[i].pin > 0) {
             if (Leds[i].value <= 'B' ) {
                 if (Leds[i].pin == Leds[i+1].pin) {
-                    digitalWrite(Leds[i].pin, (Leds[i].on || Leds[i+1].on));
+                    digitalWrite(Leds[i].pin, !(Leds[i].on || Leds[i+1].on));
                     i++;
                 } else {
-                    digitalWrite(Leds[i].pin, Leds[i].on);
+                    digitalWrite(Leds[i].pin, !Leds[i].on);
                 }
             } else {
-                digitalWrite(Leds[i].pin, Leds[i].on);
+                digitalWrite(Leds[i].pin, !Leds[i].on);
             }
         }
     }
