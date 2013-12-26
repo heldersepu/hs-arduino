@@ -14,7 +14,7 @@ struct input {
 const int pinMax = 10;
 input Input[pinMax] = {
     {17, 0, 1, 'B'}, {18, 0, 0, 'H'}, {19, 0, 0, 'L'}, {20, 0, 1, 'A'}, {21, 0, 0, 'S'},
-    {15, 0, 0, 'C'}, {23, 0, 0, 'F'}, {24, 0, 0, 'I'}, {25, 0, 0, 'M'}, {26, 0, 0, 'R'}
+    {15, 0, 0, 'C'}, {14, 0, 0, 'F'}, {13, 0, 0, 'I'}, {12, 0, 0, 'M'}, {11, 0, 0, 'R'}
 };
 
 int setup_status = 0;
@@ -137,7 +137,7 @@ void doLights() {
                 if (cyclicState) {
                     mystr[j++] = Input[i].value;
                 }
-            } else if (Input[i].value != 'F') {
+            } else if ((Input[i].value != 'F') && (Input[i].value != 'H') && (Input[i].value != 'L')) {
                 mystr[j++] = Input[i].value;
             }
 
@@ -165,6 +165,15 @@ void doLights() {
     // fog light are on only if low is on
     if (iFog && iLow) {
         mystr[j++] = 'F';
+    }
+    
+    // special case for low and high
+    if (iLow) {
+        if (iHigh) {
+            mystr[j++] = 'H';
+        } else {
+            mystr[j++] = 'L';
+        }
     }
 
     mySerial.write(MasterKey);
