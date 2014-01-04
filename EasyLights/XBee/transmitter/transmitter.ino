@@ -166,7 +166,7 @@ void doLights() {
     if (iFog && iLow) {
         mystr[j++] = 'F';
     }
-    
+
     // special case for low and high
     if (iLow) {
         if (iHigh) {
