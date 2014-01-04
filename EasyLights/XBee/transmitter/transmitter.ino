@@ -16,7 +16,6 @@ input Input[pinMax] = {
     {17, 0, 1, 'B'}, {18, 0, 0, 'H'}, {19, 0, 0, 'L'}, {20, 0, 1, 'A'}, {21, 0, 0, 'S'},
     {15, 0, 0, 'C'}, {23, 0, 0, 'F'}, {24, 0, 0, 'I'}, {25, 0, 0, 'M'}, {26, 0, 0, 'R'}
 };
-input Output[4] = {{3, 0,0, 'A'}, {4, 0,0, 'M'}, {5, 0,0, 'M'}, {6, 0,0, 'B'}};
 
 int setup_status = 0;
 boolean verbose_output = false;
@@ -120,6 +119,7 @@ void doLights() {
     boolean iLeft = false;
     boolean iRigh = false;
     boolean iHigh = false;
+    boolean iMark = false;
     boolean iLow = false;
     boolean iFog = false;
 
@@ -147,6 +147,7 @@ void doLights() {
                 case 'B': iRigh = true; break;
                 case 'S': iStop = true; break;
                 case 'H': iHigh = true; break;
+                case 'M': iMark = true; break;
                 case 'L': iLow  = true; break;
                 case 'F': iFog  = true; break;
             }
@@ -180,6 +181,12 @@ void doLights() {
     mySerial.write(MasterKey);
     mySerial.write(mystr);
 
+    // turn on-off the onboard lights
+    digitalWrite(3, !iLeft);
+    digitalWrite(4, !iMark);
+    digitalWrite(5, !iMark);
+    digitalWrite(6, !iRigh);
+
     if (verbose_output) {
         printStatus(mystr);
     } else {
@@ -201,6 +208,12 @@ void setup() {
     Serial.println(BoardID);
     mySerial.begin(9600);
 
+    // initialize onboard lights
+    for (int i = 3; i < 7; i++) {
+        pinMode(i, OUTPUT);
+    }
+
+    // initialize input pins
     for (int i = 0; i < pinMax; i++) {
        pinMode(Input[i].pin, INPUT_PULLUP);
     }
