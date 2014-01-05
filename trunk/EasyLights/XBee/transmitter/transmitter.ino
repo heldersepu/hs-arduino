@@ -17,6 +17,7 @@ input Input[pinMax] = {
     {15, 0, 0, 'C'}, {23, 0, 0, 'F'}, {24, 0, 0, 'I'}, {25, 0, 0, 'M'}, {26, 0, 0, 'R'}
 };
 
+int blink_freq = 500;
 int setup_status = 0;
 boolean verbose_output = false;
 boolean sample_output = false;
@@ -81,7 +82,7 @@ void doSample() {
         }
     }
     if (Input[samplePin].cyclic) {
-        if ((millis() - lastCycle) > 600) {
+        if ((millis() - lastCycle) > blink_freq) {
             lastCycle = millis();
             cyclicState = !cyclicState;
         }
@@ -131,7 +132,7 @@ void doLights() {
     for (int i = 0; i < pinMax; i++) {
         if (Input[i].on) {
             if (Input[i].cyclic) {
-                if ((millis() - lastCycle) > 600) {
+                if ((millis() - lastCycle) > blink_freq) {
                     lastCycle = millis();
                     cyclicState = !cyclicState;
                 }
@@ -182,10 +183,10 @@ void doLights() {
     mySerial.write(mystr);
 
     // turn on-off the onboard lights
-    digitalWrite(3, !iLeft);
+    digitalWrite(3, !(iLeft & cyclicState));
     digitalWrite(4, !iMark);
     digitalWrite(5, !iMark);
-    digitalWrite(6, !iRigh);
+    digitalWrite(6, !(iRigh & cyclicState));
 
     if (verbose_output) {
         printStatus(mystr);
