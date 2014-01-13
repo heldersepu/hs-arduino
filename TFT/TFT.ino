@@ -1,6 +1,10 @@
-#include <ITDB02_Graph16.h>
+#include <UTFT.h>
+#include <UTouch.h>
+
+extern uint8_t BigFont[];
 extern uint8_t SmallFont[];
-ITDB02 myGLCD(38,39,40,41);
+UTFT myGLCD(ITDB32S, 38,39,40,41);
+UTouch myTouch(6,5,4,3,2);
 long control = 0;
 
 void dFrame()
