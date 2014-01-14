@@ -1,11 +1,19 @@
 #include <UTFT.h>
-#include <UTouch.h>
 
-extern uint8_t BigFont[];
+#define DCLK     6
+#define CS       5
+#define DIN      4
+#define DOUT     3
+#define IRQ      2
+
+
+
 extern uint8_t SmallFont[];
+extern uint8_t BigFont[];
 UTFT myGLCD(ITDB32S, 38,39,40,41);
-UTouch myTouch(6,5,4,3,2);
+unsigned int TP_X, TP_Y;
 long control = 0;
+int x, y;
 
 void dFrame()
 {
@@ -82,8 +90,6 @@ void dSinCosTan()
 void dMovingSin()
 {
     int buf[318];
-    int x, y;
-
     myGLCD.setColor(0,0,0);
     myGLCD.fillRect(1,15,318,225);
     myGLCD.setColor(0, 0, 255);
@@ -295,35 +301,128 @@ void dRandPixels()
     }
 }
 
+void drawButton(int x1, int y1, int x2, int y2)
+{
+    myGLCD.setColor(0, 0, 255);
+    myGLCD.fillRoundRect(x1, y1, x2, y2);
+    myGLCD.setColor(255, 255, 255);
+    myGLCD.drawRoundRect(x1, y1, x2, y2); 
+}
+
+void drawButtons()
+{
+    int t;
+    myGLCD.setFont(BigFont);
+    myGLCD.setBackColor(0, 0, 255);    
+    // Draw the upper row of buttons
+    for (x=0; x<5; x++)
+    {
+        t = (x * 60);
+        drawButton(15 + t, 40, 65 + t, 90);
+        myGLCD.printNumI(x, 32 + t, 57);
+    }
+    // Draw the center row of buttons
+    for (x=0; x<5; x++)
+    {
+        t = (x * 60);
+        drawButton(15 + t, 110, 65 + t, 160);
+        myGLCD.printNumI(x+5, 32 + t, 127);
+    }
+    myGLCD.setBackColor (0, 0, 0);
+    myGLCD.setFont(SmallFont);
+}
+
+void WriteCharTo7843(unsigned char num)
+{
+    unsigned char count=0;
+    unsigned char temp;
+    temp=num;
+    digitalWrite(DCLK,LOW);
+    for(count=0;count<8;count++)
+    {
+        if(temp&0x80)
+            digitalWrite(DIN,HIGH);
+        else
+            digitalWrite(DIN,LOW);
+        temp=temp<<1;
+        digitalWrite(DCLK,LOW);
+        digitalWrite(DCLK,HIGH);
+    }
+}
+
+unsigned int ReadFromChar(unsigned char cnum)
+{
+    WriteCharTo7843(cnum);
+    digitalWrite(DCLK,HIGH);
+    digitalWrite(DCLK,LOW);
+    unsigned char count=0;
+    unsigned int Num=0;
+    for(count=0;count<12;count++)
+    {
+        Num<<=1;
+        digitalWrite(DCLK,HIGH);
+        digitalWrite(DCLK,LOW);
+        if(digitalRead(DOUT)) Num++;
+    }
+    return(Num);
+}
+
 void setup()
 {
+    Serial.begin(9600);
+    Serial.println("INIT");
     randomSeed(analogRead(0));
 
-    // Setup the LCD
+    // Setup the LCD   
+    for(int p=22;p<42;p++)
+        pinMode(p,OUTPUT);
+    for(int p=2; p<7;p++)
+        pinMode(p,OUTPUT);
+    pinMode(DOUT,INPUT);
+    pinMode(IRQ,INPUT);  
     myGLCD.InitLCD(LANDSCAPE);
     myGLCD.setFont(SmallFont);
     myGLCD.clrScr();
     dFrame();
+    drawButtons();
+    control = -1;
+    Serial.println("LOOP");
 }
 
 void loop()
 {
-    delay(500);
-    switch (control) {
-        case  0: dRandPixels(); break;
-        case  1: dMovingSin(); break;
-        case  2: dFilledRect(); break;
-        case  3: dFilledRoundRect(); break;
-        case  4: dFilledCirc(); break;
-        case  5: dSomeLines(); break;
-        case  6: dRandCirc(); break;
-        case  7: dRandRect(); break;
-        case  8: dRandRoundRect(); break;
-        case  9: dRandLines(); break;
-        case 10: dSinCosTan(); break;
-        case 11: delay(5000); break;
-        case 12: control=-1; break;
+    if (digitalRead(IRQ) == 0)
+    {        
+        digitalWrite(CS,LOW);
+        TP_Y = ReadFromChar(0x90);
+        TP_X = ReadFromChar(0xD0);
+        digitalWrite(CS,HIGH);
+
+        Serial.print((TP_X-340)*10/144);
+        Serial.print(" - ");
+        Serial.print(320-((TP_Y-320)/11));
+        Serial.println("");  
+
+        
+        if (control >= 0)
+        {
+            Serial.println(control);
+            switch (control) {
+                case 1: dMovingSin(); break;
+                case 2: dFilledRect(); break;
+                case 3: dFilledRoundRect(); break;
+                case 4: dFilledCirc(); break;
+                case 5: dSomeLines(); break;
+                case 6: dRandCirc(); break;
+                case 7: dRandRect(); break;
+                case 8: dRandRoundRect(); break;
+                case 9: dRandLines(); break;
+                case 0: dSinCosTan(); break;
+            }
+            control = -1;
+            delay(2000);
+            drawButtons();
+        }
     }
-    control++;
 }
 
