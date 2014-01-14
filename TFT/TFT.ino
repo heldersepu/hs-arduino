@@ -312,6 +312,8 @@ void drawButton(int x1, int y1, int x2, int y2)
 void drawButtons()
 {
     int t;
+    myGLCD.setColor(0,0,0);
+    myGLCD.fillRect(1,15,318,225);
     myGLCD.setFont(BigFont);
     myGLCD.setBackColor(0, 0, 255);    
     // Draw the upper row of buttons
@@ -398,10 +400,15 @@ void loop()
         TP_X = ReadFromChar(0xD0);
         digitalWrite(CS,HIGH);
 
-        Serial.print((TP_X-340)*10/144);
+        control = 0;
+        Serial.print(TP_X);
         Serial.print(" - ");
-        Serial.print(320-((TP_Y-320)/11));
-        Serial.println("");  
+        Serial.print(TP_Y);
+        Serial.print(" - ");
+        
+        control = (TP_Y - 400) / 650;
+        if (TP_X > 1700) control += 5;
+        Serial.println(control);
 
         
         if (control >= 0)
