@@ -80,33 +80,19 @@ void dSinCosTan()
 
 void dMovingSin()
 {
-    int buf[318];
     myGLCD.setColor(0,0,0);
     myGLCD.fillRect(1,15,318,225);
-    myGLCD.setColor(0, 0, 255);
     myGLCD.setBackColor(0, 0, 0);
-    myGLCD.drawLine(159, 15, 159, 224);
-    myGLCD.drawLine(1, 119, 318, 119);
+    myGLCD.setColor(0,255,255);
 
     // Draw a moving sinewave
     x=1;
     for (int i=1; i<(318*60); i++)
     {
         x++;
-        if (x==319)
-            x=1;
-        if (i>319)
-        {
-            if ((x==159)||(buf[x-1]==119))
-                myGLCD.setColor(0,0,255);
-            else
-                myGLCD.setColor(0,0,0);
-            myGLCD.drawPixel(x,buf[x-1]);
-        }
-        myGLCD.setColor(0,255,255);
+        if (x==319) x=1;        
         y=119+(sin(((i*1.1)*3.14)/180)*(90-(i / 100)));
         myGLCD.drawPixel(x,y);
-        buf[x-1]=y;
     }
 }
 
@@ -385,7 +371,12 @@ void loop()
                 case 0: dSinCosTan(); break;
             }
             control = -1;
-            delay(2000);
+            
+            delay(500);
+            while (digitalRead(IRQ) != 0)
+            {
+                delay(20);
+            }
             drawButtons();
         }
     }
