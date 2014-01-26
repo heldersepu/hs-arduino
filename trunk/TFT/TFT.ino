@@ -311,6 +311,17 @@ void drawButtons()
     myGLCD.setFont(SmallFont);
 }
 
+void drawEasyLighs()
+{
+    myGLCD.setColor(0, 0, 255);
+    myGLCD.fillRect(70,85,248,155);
+    myGLCD.setFont(BigFont);
+    myGLCD.setBackColor(0, 0, 255);
+    myGLCD.setColor(255,255,255);
+    myGLCD.print("EasyLights", CENTER, 110);
+    myGLCD.setBackColor (0, 0, 0);
+    myGLCD.setFont(SmallFont);
+}
 
 
 void setup()
@@ -372,10 +383,14 @@ void loop()
             }
             control = -1;
             
-            delay(500);
+            x = 0;
+            delay(500);            
             while (digitalRead(IRQ) != 0)
             {
+                x++;
                 delay(20);
+                if (x == 100)
+                    drawEasyLighs();
             }
             drawButtons();
         }
