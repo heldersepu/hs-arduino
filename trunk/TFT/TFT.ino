@@ -1,5 +1,6 @@
 #include <UTFT.h>
 #include "Touch.h"
+#include "tux.h"
 
 UTFT myGLCD(ITDB32S, 38,39,40,41);
 
@@ -266,6 +267,15 @@ void dRandLines()
     }
 }
 
+void dTux()
+{
+    myGLCD.setColor(255, 255, 255);
+    myGLCD.fillRect(1,15,318,224);
+    for (int x=1; x<3; x++)
+        for (int y=1; y<3; y++)
+            myGLCD.drawBitmap(50*(x*x), 30*(y*y), 64, 64, tux);
+}
+
 void dRandPixels()
 {
     myGLCD.setColor(0,0,0);
@@ -376,7 +386,7 @@ void loop()
                 case 4: dFilledCirc(); break;
                 case 5: dSomeLines(); break;
                 case 6: dRandCirc(); break;
-                case 7: dRandRect(); break;
+                case 7: dTux(); break;
                 case 8: dRandRoundRect(); break;
                 case 9: dRandLines(); break;
                 case 0: dSinCosTan(); break;
