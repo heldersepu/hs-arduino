@@ -396,11 +396,12 @@ void loop()
             x = 0;
             delay(500);            
             while (digitalRead(IRQ) != 0)
-            {
-                x++;
+            {                
                 delay(20);
-                if (x == 100)
+                if (x == 200)
                     drawEasyLighs();
+                if (x < 1000)
+                    x++;
             }
             drawButtons();
         }
