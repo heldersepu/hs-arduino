@@ -1,1 +1,1 @@
-![https://hs-arduino.googlecode.com/svn-history/r3/trunk/DoubleClick/DoubleClick_bb.png](https://hs-arduino.googlecode.com/svn-history/r3/trunk/DoubleClick/DoubleClick_bb.png)
+![alt tag](https://raw.githubusercontent.com/heldersepu/hs-arduino/master/DoubleClick/DoubleClick_bb.png)
