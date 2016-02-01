@@ -155,7 +155,7 @@ void loop(){
     fTime =(mTime % 900000);
     if (fTime > 0 && fTime < 10) {
       ledLoops = 1;
-      doubleClick = true; 
+      doubleClick = true;
     }
   }
 }

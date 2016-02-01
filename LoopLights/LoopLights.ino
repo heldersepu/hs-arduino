@@ -21,17 +21,17 @@ void setup() {
   // initialize the LED pin as an output:
   for (int i = 0; i < pinMax; i++) {
     pinMode(pinLed[i], OUTPUT);
-  }  
+  }
 }
 
-void loop(){   
+void loop(){
   for (int i = 0; i < pinMax; i++) {
     if (Serial.available()) {
       checkInput(Serial.read());
     }
     if (doLights) {
-      doOnOff(pinLed[i]);      
+      doOnOff(pinLed[i]);
     }
-  }  
+  }
 }
 

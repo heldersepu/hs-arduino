@@ -91,7 +91,7 @@ void dMovingSin()
     for (int i=1; i<(318*60); i++)
     {
         x++;
-        if (x==319) x=1;        
+        if (x==319) x=1;
         y=119+(sin(((i*1.1)*3.14)/180)*(90-(i / 100)));
         myGLCD.drawPixel(x,y);
     }
@@ -392,11 +392,11 @@ void loop()
                 case 0: dSinCosTan(); break;
             }
             control = -1;
-            
+
             x = 0;
-            delay(500);            
+            delay(500);
             while (digitalRead(IRQ) != 0)
-            {                
+            {
                 delay(20);
                 if (x == 200)
                     drawEasyLighs();
