@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE svg>
+<!-- Generator: Adobe Illustrator 16.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg xmlns="http://www.w3.org/2000/svg" enable-background="new -35.297 -19.366 87.875 99.213" version="1.1" id="Layer_1" xmlns:xml="http://www.w3.org/XML/1998/namespace"  viewBox="0 0 87.875 99.213" gorn="0" x="0px" y="0px" height="1.37796in" xml:space="preserve" width="1.22049in">
+    <g transform="translate(35.297,19.366)" >
+        <g >
+            <g >
+                <desc >
+                    <referenceFile >nsjumper_double_16_100mil_pcb.svg</referenceFile>
+                </desc>
+                <desc >Fritzing footprint SVG</desc>
+                <g id="silkscreen"  gorn="0.0.0.0.2">
+                    <line fill="#FFFFFF"  y1="-19.366" y2="79.846" stroke="#000000" x1="-35.297" x2="-35.297" stroke-width="0.5"/>
+                    <line fill="#FFFFFF"  y1="79.846" y2="79.846" stroke="#000000" x1="-35.297" x2="52.577" stroke-width="0.5"/>
+                    <line fill="#FFFFFF"  y1="79.846" y2="-19.366" stroke="#000000" x1="52.577" x2="52.577" stroke-width="0.5"/>
+                    <line fill="#FFFFFF"  y1="-19.366" y2="-19.366" stroke="#000000" x1="52.577" x2="-35.297" stroke-width="0.5"/>
+                </g>
+                <g id="copper1"  gorn="0.0.0.0.3">
+                    <g id="copper0"  gorn="0.0.0.0.3.0">
+                        <circle fill="none" id="connector0pin_1_"  r="2.088" cx="39.821" cy="-2.359" stroke="#FFBF00" gorn="0.0.0.0.3.0.0" stroke-width="1"/>
+                        <circle fill="none" id="connector1pin_1_"  r="2.088" cx="32.621" cy="-2.359" stroke="#FFBF00" gorn="0.0.0.0.3.0.1" stroke-width="1"/>
+                        <circle fill="none" id="connector2pin_1_"  r="2.088" cx="25.421" cy="-2.359" stroke="#FFBF00" gorn="0.0.0.0.3.0.2" stroke-width="1"/>
+                        <circle fill="none" id="connector3pin_1_"  r="2.088" cx="18.221" cy="-2.359" stroke="#FFBF00" gorn="0.0.0.0.3.0.3" stroke-width="1"/>
+                        <circle fill="none" id="connector4pin_1_"  r="2.088" cx="11.021" cy="-2.359" stroke="#FFBF00" gorn="0.0.0.0.3.0.4" stroke-width="1"/>
+                        <circle fill="none" id="connector5pin_1_"  r="2.088" cx="3.821" cy="-2.359" stroke="#FFBF00" gorn="0.0.0.0.3.0.5" stroke-width="1"/>
+                        <circle fill="none" id="connector6pin_1_"  r="2.088" cx="-3.379" cy="-2.359" stroke="#FFBF00" gorn="0.0.0.0.3.0.6" stroke-width="1"/>
+                        <circle fill="none" id="connector7pin_1_"  r="2.088" cx="-24.979" cy="8.442" stroke="#FFBF00" gorn="0.0.0.0.3.0.7" stroke-width="1"/>
+                        <circle fill="none" id="connector8pin"  r="2.088" cx="-24.979" cy="15.641" stroke="#FFBF00" gorn="0.0.0.0.3.0.8" stroke-width="1"/>
+                        <circle fill="none" id="connector9pin"  r="2.088" cx="-24.979" cy="22.842" stroke="#FFBF00" gorn="0.0.0.0.3.0.9" stroke-width="1"/>
+                        <circle fill="none" id="connector10pin"  r="2.088" cx="-24.979" cy="30.042" stroke="#FFBF00" gorn="0.0.0.0.3.0.10" stroke-width="1"/>
+                        <circle fill="none" id="connector11pin"  r="2.088" cx="44.073" cy="42.239" stroke="#FFBF00" gorn="0.0.0.0.3.0.11" stroke-width="1"/>
+                        <circle fill="none" id="connector12pin"  r="2.088" cx="36.873" cy="42.239" stroke="#FFBF00" gorn="0.0.0.0.3.0.12" stroke-width="1"/>
+                        <circle fill="none" id="connector13pin"  r="2.088" cx="29.673" cy="42.239" stroke="#FFBF00" gorn="0.0.0.0.3.0.13" stroke-width="1"/>
+                        <circle fill="none" id="connector14pin"  r="2.088" cx="22.474" cy="42.239" stroke="#FFBF00" gorn="0.0.0.0.3.0.14" stroke-width="1"/>
+                        <circle fill="none" id="connector15pin"  r="2.088" cx="15.274" cy="42.239" stroke="#FFBF00" gorn="0.0.0.0.3.0.15" stroke-width="1"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

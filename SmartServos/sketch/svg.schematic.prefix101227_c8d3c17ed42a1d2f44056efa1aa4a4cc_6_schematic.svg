@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE svg>
+<!-- Generator: Adobe Illustrator 16.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg xmlns="http://www.w3.org/2000/svg" enable-background="new -49.47 -33.54 102.048 127.559" version="1.1" id="Layer_1" xmlns:xml="http://www.w3.org/XML/1998/namespace"  viewBox="0 0 102.048 127.559" gorn="0" x="0px" y="0px" height="1.77165in" xml:space="preserve" width="1.41733in">
+    <g transform="translate(49.47,33.54)" >
+        <g >
+            <g >
+                <g >
+                    <desc >
+                        <referenceFile >nsjumper_double_16_100mil_pcb.svg</referenceFile>
+                    </desc>
+                    <desc >Fritzing footprint SVG</desc>
+                    <g id="silkscreen"  gorn="0.0.0.0.0.2">
+                        <g transform="matrix(1 0 0 1 -17.6101 18.74)" >
+                            <g >
+                                <g >
+                                    <text font-family="OCRA"  font-size="12">ULN2003</text>
+                                </g>
+                            </g>
+                        </g>
+                        <line fill="#FFFFFF"  y1="-19.366" y2="79.846" stroke="#000000" x1="-35.297" x2="-35.297" stroke-width="0.5"/>
+                        <line fill="#FFFFFF"  y1="79.846" y2="79.846" stroke="#000000" x1="-35.297" x2="52.577" stroke-width="0.5"/>
+                        <line fill="#FFFFFF"  y1="79.846" y2="-19.366" stroke="#000000" x1="52.577" x2="52.577" stroke-width="0.5"/>
+                        <line fill="#FFFFFF"  y1="-19.366" y2="-19.366" stroke="#000000" x1="52.577" x2="-35.297" stroke-width="0.5"/>
+                    </g>
+                    <g id="schematic"  gorn="0.0.0.0.0.3">
+                        <line fill="none" id="connector7pin"  y1="8.442" y2="8.442" stroke="#000000" x1="-35.297" x2="-49.47" gorn="0.0.0.0.0.3.0" stroke-width="1"/>
+                        <rect fill="none" id="connector7terminal"  stroke="none" gorn="0.0.0.0.0.3.1" x="-49.9852" y="8.441" height="0.002" stroke-width="0" width="0.030346"/>
+                        <line fill="none" id="connector8pin"  y1="15.641" y2="15.641" stroke="#000000" x1="-35.297" x2="-49.47" gorn="0.0.0.0.0.3.2" stroke-width="1"/>
+                        <rect fill="none" id="connector8terminal"  stroke="none" gorn="0.0.0.0.0.3.3" x="-49.9852" y="15.64" height="0.002" stroke-width="0" width="0.030346"/>
+                        <line fill="none" id="connector9pin"  y1="22.842" y2="22.842" stroke="#000000" x1="-35.297" x2="-49.47" gorn="0.0.0.0.0.3.4" stroke-width="1"/>
+                        <rect fill="none" id="connector9terminal"  stroke="none" gorn="0.0.0.0.0.3.5" x="-49.9852" y="22.841" height="0.002" stroke-width="0" width="0.030346"/>
+                        <line fill="none" id="connector10pin"  y1="30.042" y2="30.042" stroke="#000000" x1="-35.297" x2="-49.47" gorn="0.0.0.0.0.3.6" stroke-width="1"/>
+                        <rect fill="none" id="connector10terminal"  stroke="none" gorn="0.0.0.0.0.3.7" x="-49.9852" y="30.041" height="0.002" stroke-width="0" width="0.030346"/>
+                        <line fill="none" id="connector6pin"  y1="-19.366" y2="-33.54" stroke="#000000" x1="-3.379" x2="-3.379" gorn="0.0.0.0.0.3.8" stroke-width="1"/>
+                        <rect fill="none" id="connector6terminal"  stroke="none" gorn="0.0.0.0.0.3.9" x="-3.38" y="-34.0552" height="0.030348" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector5pin"  y1="-19.366" y2="-33.54" stroke="#000000" x1="3.821" x2="3.821" gorn="0.0.0.0.0.3.10" stroke-width="1"/>
+                        <rect fill="none" id="connector5terminal"  stroke="none" gorn="0.0.0.0.0.3.11" x="3.82" y="-34.0552" height="0.030348" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector4pin"  y1="-19.366" y2="-33.54" stroke="#000000" x1="11.021" x2="11.021" gorn="0.0.0.0.0.3.12" stroke-width="1"/>
+                        <rect fill="none" id="connector4terminal"  stroke="none" gorn="0.0.0.0.0.3.13" x="11.02" y="-34.0552" height="0.030348" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector3pin"  y1="-19.366" y2="-33.54" stroke="#000000" x1="18.221" x2="18.221" gorn="0.0.0.0.0.3.14" stroke-width="1"/>
+                        <rect fill="none" id="connector3terminal"  stroke="none" gorn="0.0.0.0.0.3.15" x="18.22" y="-34.0552" height="0.030348" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector2pin"  y1="-19.366" y2="-33.54" stroke="#000000" x1="25.421" x2="25.421" gorn="0.0.0.0.0.3.16" stroke-width="1"/>
+                        <rect fill="none" id="connector2terminal"  stroke="none" gorn="0.0.0.0.0.3.17" x="25.42" y="-34.0552" height="0.030348" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector1pin"  y1="-19.366" y2="-33.54" stroke="#000000" x1="32.621" x2="32.621" gorn="0.0.0.0.0.3.18" stroke-width="1"/>
+                        <rect fill="none" id="connector1terminal"  stroke="none" gorn="0.0.0.0.0.3.19" x="32.62" y="-34.0552" height="0.030348" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector0pin"  y1="-19.366" y2="-33.54" stroke="#000000" x1="39.821" x2="39.821" gorn="0.0.0.0.0.3.20" stroke-width="1"/>
+                        <rect fill="none" id="connector0terminal"  stroke="none" gorn="0.0.0.0.0.3.21" x="39.82" y="-34.0552" height="0.030348" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector11pin"  y1="79.846" y2="94.019" stroke="#000000" x1="15.273" x2="15.273" gorn="0.0.0.0.0.3.22" stroke-width="1"/>
+                        <rect fill="none" id="connector11terminal"  stroke="none" gorn="0.0.0.0.0.3.23" x="15.272" y="79.3308" height="0.030346" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector12pin"  y1="79.846" y2="94.019" stroke="#000000" x1="22.474" x2="22.474" gorn="0.0.0.0.0.3.24" stroke-width="1"/>
+                        <rect fill="none" id="connector12terminal"  stroke="none" gorn="0.0.0.0.0.3.25" x="22.473" y="79.3308" height="0.030346" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector13pin"  y1="79.846" y2="94.019" stroke="#000000" x1="29.673" x2="29.673" gorn="0.0.0.0.0.3.26" stroke-width="1"/>
+                        <rect fill="none" id="connector13terminal"  stroke="none" gorn="0.0.0.0.0.3.27" x="29.672" y="79.3308" height="0.030346" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector14pin"  y1="79.846" y2="94.019" stroke="#000000" x1="36.872" x2="36.872" gorn="0.0.0.0.0.3.28" stroke-width="1"/>
+                        <rect fill="none" id="connector14terminal"  stroke="none" gorn="0.0.0.0.0.3.29" x="36.871" y="79.3308" height="0.030346" stroke-width="0" width="0.002"/>
+                        <line fill="none" id="connector15pin"  y1="79.846" y2="94.019" stroke="#000000" x1="44.073" x2="44.073" gorn="0.0.0.0.0.3.30" stroke-width="1"/>
+                        <rect fill="none" id="connector15terminal"  stroke="none" gorn="0.0.0.0.0.3.31" x="44.072" y="79.3308" height="0.030346" stroke-width="0" width="0.002"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
