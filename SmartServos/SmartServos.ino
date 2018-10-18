@@ -1,6 +1,7 @@
 #include "Servo.h"
 
-Servo stepper(4);
+const int MAX = 2;
+Servo motors[MAX] = {{22}, {30}};
 
 void setup() {
   Serial.begin(9600);  
@@ -14,5 +15,7 @@ void loop() {
 
 void start(int val) {
   Serial.println(val);
-  stepper.step(val);   
+  for (int i = 0; i < MAX; i++) {
+    motors[i].step(val);  
+  }
 }
