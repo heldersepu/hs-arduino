@@ -1,5 +1,6 @@
 #include <Stepper.h>
 #define STEPS 32 // steps on the motor
+#define MOVE 2048/24 // steps per move
 
 
 class Servo : public Stepper {
@@ -10,9 +11,9 @@ class Servo : public Stepper {
 
     void move(char x) {
       if (x < 'a') {
-        step(100);
+        step(MOVE + MOVE*(x-'A'));
       } else {
-        step(-100);
+        step(-MOVE - MOVE*(x-'a'));
       }
     }
 };
