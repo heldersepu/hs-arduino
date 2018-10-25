@@ -1,10 +1,13 @@
+#include "Lcd.h"
 #include "Servo.h"
 
 const int MAX = 3;
 Servo motors[MAX] = {{22}, {30}, {38}};
+Lcd lcd;
 
 void setup() {
   Serial.begin(9600);
+  lcd.hello();
 }
 
 void loop() {
