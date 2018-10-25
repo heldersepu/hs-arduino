@@ -1,7 +1,7 @@
 #include "Servo.h"
 
-const int MAX = 2;
-Servo motors[MAX] = {{22}, {30}};
+const int MAX = 3;
+Servo motors[MAX] = {{22}, {30}, {38}};
 
 void setup() {
   Serial.begin(9600);
