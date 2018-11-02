@@ -17,4 +17,9 @@ class Servo : public Stepper {
         step(-MOVE - MOVE*(x-'a'));
       }
     }
+
+    void init() {
+      step(1);
+      step(-11);
+    }
 };
